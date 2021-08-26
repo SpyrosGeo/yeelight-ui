@@ -49,10 +49,10 @@ function App() {
   return (
     <div className="App">
       <h1 style={powerState === "on" ? { color: `#${lightColor}` } : { color: 'red' }}>yeelight is {powerState}</h1>
-      <form action="" method="get" onSubmit={handleSubmit}>
-      <button className="btn" type="submit"> Turn Light {buttonState}</button>
-      </form>
+      <div className="button-group">
+      <button className="btn" onClick={handleSubmit}> Turn Light {buttonState}</button>
       <button className="btn" onClick={handleDefaultLightState}>Default Light</button>
+      </div>
 
       <TwitterPicker
         color={['#f7f379', '#f7f379', '#f7f379', '#f7f379', '#f7f379', '#f7f379', '#f7f379', '#f7f379', "#f7f178", "#f7f178", "#f7f178"]}
