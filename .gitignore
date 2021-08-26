@@ -4,8 +4,14 @@
 /node_modules
 /.pnp
 .pnp.js
-/webserver
-webserver/
+webserver/bin/
+webserver/include/
+webserver/bin/
+webserver/lib/
+webserver/lib64/
+webserver/share/
+webserver/workspace.code-workspace
+
 # testing
 /coverage
 
