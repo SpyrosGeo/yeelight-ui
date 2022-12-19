@@ -4,26 +4,4 @@
   align-items: center;
 }
 
-.button-group {
-background-color: rgba(0, 0, 0, 0.2);
-margin: 2rem;
-}
 
-.btn {
-  font-size: 1.3rem;
-  padding: 1rem;
-  margin: 2rem;
-  border: none;
-  outline: none;
-  background-color:seashell;
-  color:#000;
-  border-radius: 5%;
-  transition: background-color 1.2s ease-in-out;
-  /* transition: color 0.5s ease-in-out; */
-  /* transform: scale(); */
-
-}
-.btn:hover{
-  background-color: #212121;
-  color:seashell;
-}
