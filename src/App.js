@@ -5,19 +5,18 @@ import './App.css';
 
 
 function App() {
+  const BASE_URL='https://yl-api.thatguy.gr'
   const [powerState, setPowerState] = useState('')
   const [lightColor, setLightColor] = useState('')
-  const [buttonState, setButtonState] = useState('')
+  const [bulb, setBulb] = useState('')
+  const [strip, setStrip] = useState('')
+  const [devices,setDevices]=useState('')
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await axios.get('http://localhost:5000')
+      const response = await axios.get(BASE_URL)
       const { color, power } = response.data
-      if (power === "on") {
-        setButtonState('off')
-      } else if (power === 'off') {
-        setButtonState('on')
-      }
+      power ==="on"?setDevices('off'):setDevices('on')
       setPowerState(power)
       setLightColor(color)
 
@@ -25,9 +24,11 @@ function App() {
     fetchData()
   }, [powerState])
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e,device) => {
     e.preventDefault()
-    const response = await axios.get('http://localhost:5000/on')
+    const {data} = await axios.get(`${BASE_URL}/${device}`)
+    if(device==='bulb')setBulb(data.power==="on"?'off':'on')
+    if(device==='strip')setBulb(data.power==="on"?'off':'on')
     setPowerState('')
   }
 
@@ -37,20 +38,22 @@ function App() {
     if (hexColor.length > 5) {
       hexColor = hexColor.substring(1)
       setLightColor(hexColor)
-      const response = axios.get(`http://localhost:5000/color/${hexColor}`)
+      const response = axios.get(`${BASE_URL}/color/${hexColor}`)
 
     }
   }
 
   const handleDefaultLightState = () => {
-    const response = axios.get("http://localhost:5000/default")
+    const response = axios.get(`${BASE_URL}/default`)
     setLightColor('#ccd613')
   }
   return (
     <div className="App">
-      <h1 style={powerState === "on" ? { color: `#${lightColor}` } : { color: 'red' }}>yeelight is {powerState}</h1>
+      <h1 style={powerState === "on" ? { color: `#${lightColor}` } : { color: 'red' }}>Bulb is {powerState}</h1>
       <div className="button-group">
-      <button className="btn" onClick={handleSubmit}> Turn Light {buttonState}</button>
+        <button className="btn" onClick={e=>handleSubmit(e,'on')}> Turn Lights {devices}</button>
+        <button className="btn" onClick={e=>handleSubmit(e,'bulb')}> Turn Bulb {bulb}</button>
+        <button className="btn" onClick={e=>handleSubmit(e,'strip')}> Turn Strip {strip}</button>
       <button className="btn" onClick={handleDefaultLightState}>Default Light</button>
       </div>
 
