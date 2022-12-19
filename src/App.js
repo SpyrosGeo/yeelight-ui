@@ -28,7 +28,6 @@ function App() {
     if(device==='bulb'){setBulb(data.power==="on"?'off':'on')}
     if(device==='strip')setStrip(data.power==="on"?'off':'on')
     setPowerState({device,power:data.power})
-    console.log('powerState',powerState)
   }
 
   const handleColorPickerChange = (color) => {
@@ -37,7 +36,6 @@ function App() {
       hexColor = hexColor.substring(1)
       setLightColor(hexColor)
       const response = axios.get(`${BASE_URL}/color/${hexColor}`)
-
     }
   }
 
@@ -45,8 +43,8 @@ function App() {
   return (
     <div className="App ">
       <div className="container button-group">
-        <button className="btn"style={{backgroundColor:bulb==="off"?"#eb3d30":"#008e81"}} onClick={e=>handleSubmit(e,'bulb')}> Turn Bulb {bulb}</button>
-        <button className="btn"style={{backgroundColor:strip==="off"?"#eb3d30":"#008e81"}} onClick={e=>handleSubmit(e,'strip')}> Turn Strip {strip}</button>
+        <button className="btn"style={{backgroundColor:bulb==="off"?"#eb3d30":"#008e81"}} onClick={e=>handleSubmit(e,'bulb')}> Bulb </button>
+        <button className="btn"style={{backgroundColor:strip==="off"?"#eb3d30":"#008e81"}} onClick={e=>handleSubmit(e,'strip')}>  Strip </button>
         <button className="btn" onClick={e=>handleSubmit(e,'default')}>Default Light</button>
       </div>
 
