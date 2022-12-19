@@ -43,15 +43,16 @@ function App() {
 
   
   return (
-    <div className="App ">
-      <div className="container button-group">
-
-      </div>
-
+    <div className="App container ">
+      <div className="row d-flex justify-content-center my-5 ">
       <TwitterPicker
         color={['#f7f379', '#f7f379', '#f7f379', '#f7f379', '#f7f379', '#f7f379', '#f7f379', '#f7f379', "#f7f178", "#f7f178", "#f7f178"]}
         triangle={"hide"}
         onChange={handleColorPickerChange} />
+        <Button  className='mt-2 col col-9 shadow' variant="warning" onClick={e=>(handleSubmit(e,'default'))}>Default</Button>
+      </div>
+
+      
       <div className=' container d-flex justify-content-around mt-5'>
       <DeviceCard  device={bulb} handleSubmit={handleSubmit} handleColorPickerChange={handleColorPickerChange}/>
       <DeviceCard  device={strip} handleSubmit={handleSubmit} handleColorPickerChange={handleColorPickerChange}/>
