@@ -16,10 +16,13 @@ function App() {
     const fetchData = async () => {
       
       const response = await axios.get(`${BASE_URL}/devices`)
-      response.data.bulb.name='Bulb'
-      response.data.strip.name='Strip'
+      console.log('response',response.data.tapo)
+      response.data.bulb.name='bulb'
+      response.data.strip.name='strip'
+      response.data.tapo.name='tapo'
       setBulb(response.data.bulb)
       setStrip(response.data.strip)
+      setTapo(response.data.tapo)
     }
     fetchData()
   }, [powerState])
@@ -29,6 +32,7 @@ function App() {
     const {data} = await axios.get(`${BASE_URL}/${device}`)
     if(device==='bulb'){setBulb(data.power==="on"?'off':'on')}
     if(device==='strip')setStrip(data.power==="on"?'off':'on')
+    if(device ==='tapo')setTapo(data.power ==="on"?'off':'on')
     setPowerState({device,power:data.power})
   }
 
@@ -51,10 +55,9 @@ function App() {
         onChange={handleColorPickerChange} />
         <Button  className='mt-2 col col-9 shadow' variant="warning" onClick={e=>(handleSubmit(e,'default'))}>Default</Button>
       </div>
-
-      
       <div className=' container d-flex justify-content-around mt-5'>
       <DeviceCard  device={bulb} handleSubmit={handleSubmit} handleColorPickerChange={handleColorPickerChange}/>
+       <DeviceCard  device={tapo} handleSubmit={handleSubmit} handleColorPickerChange={handleColorPickerChange}/>
       <DeviceCard  device={strip} handleSubmit={handleSubmit} handleColorPickerChange={handleColorPickerChange}/>
         </div>
     </div>
