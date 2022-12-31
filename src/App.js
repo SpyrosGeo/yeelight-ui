@@ -13,6 +13,8 @@ function App() {
   const [bulb, setBulb] = useState({});
   const [strip, setStrip] = useState({});
   const [tapo, setTapo] = useState("");
+
+
   useEffect(() => {
     const fetchData = async () => {
       const response = await axios.get(`${BASE_URL}/devices`);
@@ -37,8 +39,9 @@ function App() {
     if (device === "tapo") setTapo(data.power === "on" ? "off" : "on");
     setPowerState({ device, power: data.power });
   };
-  const handleBrightness = (device, brightness) => {
-    console.log("device", device);
+  const handleBrightness = async (device, brightness) => {
+    console.log('pressed')
+    const {data } = await axios.get(`${BASE_URL}/brightness/${device.name}/${brightness}`)
   };
 
   const handleColorPickerChange = (color) => {

@@ -1,20 +1,19 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Card, Image } from "react-bootstrap";
 import { TwitterPicker } from "react-color";
 const DeviceCard = ({
   device,
-  brightness,
   handleSubmit,
   handleColorPickerChange,
   handleBrightness,
 }) => {
-  const [slider, setSlider] = useState(0);
-
+  const [slider, setSlider] = useState(10);
+  
   const handleSlider = (command) => {
     if(command==="increment" && slider<100){
     setSlider(slider+10);
     }
-    if(command==="decrement" && slider>0){
+    if(command==="decrement" && slider>10){
     setSlider(slider-10);
     }
     handleBrightness(device, slider);
@@ -37,12 +36,12 @@ const DeviceCard = ({
         />
         <Card.Body>
           <div>
-            <label  for="customRange1" class="form-label">
+            <label  for="customRange1" className="form-label">
               Brightness{" "}
             </label>
             <div className="d-flex justify-content-between">
               <Button onClick={()=>{handleSlider('decrement')}}>-</Button>
-              <span>{slider}%</span>
+              <span>{+device.current_brightness?+device.current_brightness:+device.brightness}%</span>
               <Button onClick={()=>{handleSlider('increment')}}>+</Button>
             </div>
           </div>
