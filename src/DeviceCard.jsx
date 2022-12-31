@@ -8,15 +8,31 @@ const DeviceCard = ({
   handleBrightness,
 }) => {
   const [slider, setSlider] = useState(10);
-  
+  const [brightness ,setBrightness] = useState() 
+
+  useEffect(()=>{
+    console.log('device',device)
+    const setData = async()=>{
+    if(device.name==='strip'||device.name ==='bulb')setBrightness(+device.current_brightness)
+    if(device.name ==='tapo')setBrightness(device.brightness)
+    }
+    setData()
+    console.log('brightness inside useEffect',brightness)
+  },[])
+
+
+
   const handleSlider = (command) => {
-    if(command==="increment" && slider<100){
-    setSlider(slider+10);
+
+    if(command==="increment" && brightness<100){
+
+    setBrightness(brightness+10)
+      console.log('brightness',brightness)
     }
-    if(command==="decrement" && slider>10){
-    setSlider(slider-10);
+    if(command==="decrement" && brightness>10){
+    setSlider(brightness-10);
     }
-    handleBrightness(device, slider);
+    handleBrightness(device, brightness);
   };
 
   return (
@@ -36,12 +52,12 @@ const DeviceCard = ({
         />
         <Card.Body>
           <div>
-            <label  for="customRange1" className="form-label">
-              Brightness{" "}
+            <label  htmlFor="customRange1" className="form-label">
+              Brightness
             </label>
             <div className="d-flex justify-content-between">
               <Button onClick={()=>{handleSlider('decrement')}}>-</Button>
-              <span>{+device.current_brightness?+device.current_brightness:+device.brightness}%</span>
+              <span>{brightness}%</span>
               <Button onClick={()=>{handleSlider('increment')}}>+</Button>
             </div>
           </div>

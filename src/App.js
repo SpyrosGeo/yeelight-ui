@@ -12,10 +12,11 @@ function App() {
   const [bulbBrightness, setBulbBrightness] = useState("");
   const [bulb, setBulb] = useState({});
   const [strip, setStrip] = useState({});
-  const [tapo, setTapo] = useState("");
+  const [tapo, setTapo] = useState({});
 
 
   useEffect(() => {
+    debugger
     const fetchData = async () => {
       const response = await axios.get(`${BASE_URL}/devices`);
       console.log("response", response.data.tapo);
