@@ -1,5 +1,5 @@
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "react-bootstrap";
 import { TwitterPicker } from "react-color";
 import DeviceCard from "./DeviceCard";
@@ -8,28 +8,45 @@ function App() {
   const BASE_URL = "https://yl-api.thatguy.gr";
   const [powerState, setPowerState] = useState({ device: "", power: "" });
   const [lightColor, setLightColor] = useState("");
-
-  const [bulbBrightness, setBulbBrightness] = useState("");
+  const [bulbBrightness,setBulbBrightness] = useState()
+  const [stripBrightness,setStripBrightness] = useState()
+  const [tapoBrightness,setTapoBrightness] = useState()
+  const tempRef = useRef(null)
   const [bulb, setBulb] = useState({});
   const [strip, setStrip] = useState({});
   const [tapo, setTapo] = useState({});
+  const [piTemp, setPiTemp] = useState(0)
 
 
   useEffect(() => {
-    debugger
     const fetchData = async () => {
       const response = await axios.get(`${BASE_URL}/devices`);
-      console.log("response", response.data.tapo);
       response.data.bulb.name = "bulb";
       response.data.strip.name = "strip";
       response.data.tapo.name = "tapo";
       setBulb(response.data.bulb);
       setStrip(response.data.strip);
       setTapo(response.data.tapo);
+      setBulbBrightness(response.data.bulb.current_brightness)
+      setStripBrightness(response.data.strip.current_brightness)
+      setTapoBrightness(response.data.tapo.brightness)
     };
     fetchData();
   }, [powerState]);
-
+  useEffect(()=>{
+    const fetchTempData = async() =>{
+      const response = await axios.get(`${BASE_URL}/pi/temp`)
+      setPiTemp(response.data.pi.cpu_thermal[0][1].toFixed(2))
+    }
+    fetchTempData()
+    tempRef.current = setInterval(fetchTempData,1000*60*5)
+    return ()=>{
+      if(tempRef.current){
+        clearInterval(tempRef.current)
+      }
+    }
+  },[])
+  
   const handleSubmit = async (e, device) => {
     e.preventDefault();
     const { data } = await axios.get(`${BASE_URL}/${device}`);
@@ -40,9 +57,9 @@ function App() {
     if (device === "tapo") setTapo(data.power === "on" ? "off" : "on");
     setPowerState({ device, power: data.power });
   };
-  const handleBrightness = async (device, brightness) => {
-    console.log('pressed')
+  const handleBrightness = async (device,brightness ) => {
     const {data } = await axios.get(`${BASE_URL}/brightness/${device.name}/${brightness}`)
+    setPowerState({device,power:"on"})
   };
 
   const handleColorPickerChange = (color) => {
@@ -79,7 +96,7 @@ function App() {
           variant="warning"
           onClick={(e) => handleSubmit(e, "default")}
         >
-          Default
+          Default {piTemp}
         </Button>
       </div>
       <div className=" container d-flex justify-content-around mt-5">
@@ -92,12 +109,14 @@ function App() {
         />
         <DeviceCard
           device={tapo}
+          brightness={tapoBrightness}
           handleBrightness={handleBrightness}
           handleSubmit={handleSubmit}
           handleColorPickerChange={handleColorPickerChange}
         />
         <DeviceCard
           device={strip}
+          brightness={stripBrightness}
           handleBrightness={handleBrightness}
           handleSubmit={handleSubmit}
           handleColorPickerChange={handleColorPickerChange}

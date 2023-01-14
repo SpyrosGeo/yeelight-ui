@@ -5,34 +5,18 @@ const DeviceCard = ({
   device,
   handleSubmit,
   handleColorPickerChange,
+  brightness,
   handleBrightness,
 }) => {
-  const [slider, setSlider] = useState(10);
-  const [brightness ,setBrightness] = useState() 
-
-  useEffect(()=>{
-    console.log('device',device)
-    const setData = async()=>{
-    if(device.name==='strip'||device.name ==='bulb')setBrightness(+device.current_brightness)
-    if(device.name ==='tapo')setBrightness(device.brightness)
-    }
-    setData()
-    console.log('brightness inside useEffect',brightness)
-  },[])
-
 
 
   const handleSlider = (command) => {
-
     if(command==="increment" && brightness<100){
-
-    setBrightness(brightness+10)
-      console.log('brightness',brightness)
+      handleBrightness(device,+brightness+10)
     }
-    if(command==="decrement" && brightness>10){
-    setSlider(brightness-10);
+    if(command==="decrement" &&brightness>10){
+    handleBrightness(device,+brightness-10);
     }
-    handleBrightness(device, brightness);
   };
 
   return (
