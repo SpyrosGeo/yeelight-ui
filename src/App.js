@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState, useEffect, useRef } from "react";
 import { Button } from "react-bootstrap";
-import { TwitterPicker } from "react-color";
+import { CompactPicker, TwitterPicker } from "react-color";
 import DeviceCard from "./DeviceCard";
 import "./App.css";
 function App() {
@@ -36,7 +36,7 @@ function App() {
   useEffect(()=>{
     const fetchTempData = async() =>{
       const response = await axios.get(`${BASE_URL}/pi/temp`)
-      setPiTemp(response.data.pi.cpu_thermal[0][1].toFixed(2))
+      setPiTemp(response.data.pi.cpu_thermal[0][1].toFixed(1))
     }
     fetchTempData()
     tempRef.current = setInterval(fetchTempData,1000*60*5)
@@ -74,7 +74,9 @@ function App() {
   return (
     <div className="App container ">
       <div className="row d-flex justify-content-center my-5 ">
-        <TwitterPicker
+        <div className="row">
+        <div className="col col-8">
+        <CompactPicker
           color={[
             "#f7f379",
             "#f7f379",
@@ -92,14 +94,23 @@ function App() {
           onChange={handleColorPickerChange}
         />
         <Button
-          className="mt-2 col col-9 shadow"
+          className="mt-2 col col-12 shadow"
           variant="warning"
           onClick={(e) => handleSubmit(e, "default")}
         >
-          Default {piTemp}
+          Default 
         </Button>
+        </div>
+          <div className="col col-4 d-flex justify-content-center align-items-center ">
+              <img className="" height='20'  src="/5969184.png"/>
+            <span  className="  piTemp">{piTemp}°C</span>
+          </div>
       </div>
-      <div className=" container d-flex justify-content-around mt-5">
+      </div>
+      <div className=" container d-flex justify-content-center mt-5">
+       <div className="row d-flex justify-content-center">
+
+         <div className="col col-auto mb-1">
         <DeviceCard
           device={bulb}
           brightness={bulbBrightness}
@@ -107,6 +118,8 @@ function App() {
           handleSubmit={handleSubmit}
           handleColorPickerChange={handleColorPickerChange}
         />
+         </div>
+         <div className="col col-auto mb-1">
         <DeviceCard
           device={tapo}
           brightness={tapoBrightness}
@@ -114,6 +127,8 @@ function App() {
           handleSubmit={handleSubmit}
           handleColorPickerChange={handleColorPickerChange}
         />
+         </div>
+         <div className="col col-auto mb-1">
         <DeviceCard
           device={strip}
           brightness={stripBrightness}
@@ -121,6 +136,8 @@ function App() {
           handleSubmit={handleSubmit}
           handleColorPickerChange={handleColorPickerChange}
         />
+         </div>
+       </div>
       </div>
     </div>
   );
