@@ -57,11 +57,15 @@ function App() {
     if (device === "tapo") setTapo(data.power === "on" ? "off" : "on");
     setPowerState({ device, power: data.power });
   };
+  // functions that change the state of the device
   const handleBrightness = async (device,brightness ) => {
     const {data } = await axios.get(`${BASE_URL}/brightness/${device.name}/${brightness}`)
     setPowerState({device,power:"on"})
   };
-
+  const handleColorTemp = async(device,ct) =>{
+    const {data} = await axios .get(`${BASE_URL}/colortemp/${device.name}/${ct}`)
+    setPowerState({device,power:device.power})
+  }
   const handleColorPickerChange = (color) => {
     let hexColor = color.hex;
     if (hexColor.length > 5) {
@@ -117,6 +121,7 @@ function App() {
           handleBrightness={handleBrightness}
           handleSubmit={handleSubmit}
           handleColorPickerChange={handleColorPickerChange}
+          handleColorTemp={handleColorTemp}
         />
          </div>
          <div className="col col-auto mb-1">
@@ -134,6 +139,7 @@ function App() {
           brightness={stripBrightness}
           handleBrightness={handleBrightness}
           handleSubmit={handleSubmit}
+          handleColorTemp={handleColorTemp}
           handleColorPickerChange={handleColorPickerChange}
         />
          </div>

@@ -5,12 +5,16 @@ const DeviceCard = ({
   device,
   handleSubmit,
   handleColorPickerChange,
+  handleColorTemp,
   brightness,
   handleBrightness,
 }) => {
+  const [slider,setSlider] = useState(0)
 
-
-  const handleSlider = (command) => {
+  useEffect(()=>{
+    setSlider(device.ct)
+  },[device])
+  const handleChangeBrightness = (command) => {
     if(command==="increment" && brightness<100){
       handleBrightness(device,+brightness+10)
     }
@@ -18,7 +22,14 @@ const DeviceCard = ({
     handleBrightness(device,+brightness-10);
     }
   };
-
+  const handleSlider = (e)=>{
+    let ct = e.target.value
+    console.log('ct',ct)
+    setSlider(ct)
+    setTimeout(()=>{
+    handleColorTemp(device,ct)
+    },1000)
+  }
   return (
     <div>
       <Card
@@ -40,11 +51,16 @@ const DeviceCard = ({
               Brightness
             </label>
             <div className="d-flex justify-content-between">
-              <Button onClick={()=>{handleSlider('decrement')}}>-</Button>
+              <Button onClick={()=>{handleChangeBrightness('decrement')}}>-</Button>
               <span>{brightness}%</span>
-              <Button onClick={()=>{handleSlider('increment')}}>+</Button>
+              <Button onClick={()=>{handleChangeBrightness('increment')}}>+</Button>
             </div>
-          </div>
+            { device?.name==='tapo'?'':
+              <div className="my-1">
+                <input onChange={handleSlider} step="100" min="2700" max="4700" value={slider} type="range"/>
+            </div>
+            }
+                      </div>
         </Card.Body>
       </Card>
     </div>
