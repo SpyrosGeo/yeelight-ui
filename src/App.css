@@ -12,4 +12,11 @@
   font-size:.6rem;
   font-weight:bold;
 }
+.slider {
+  background-color:rgba(0,0,0,0.3);
+  border-radius:2rem;
+}
+.arrow {
+  color: green;
+}
 

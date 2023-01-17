@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { Button, Card, Image } from "react-bootstrap";
 import { TwitterPicker } from "react-color";
+import { faChevronLeft,faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 const DeviceCard = ({
   device,
   handleSubmit,
-  handleColorPickerChange,
   handleColorTemp,
   brightness,
   handleBrightness,
@@ -24,7 +25,6 @@ const DeviceCard = ({
   };
   const handleSlider = (e)=>{
     let ct = e.target.value
-    console.log('ct',ct)
     setSlider(ct)
     setTimeout(()=>{
     handleColorTemp(device,ct)
@@ -50,14 +50,14 @@ const DeviceCard = ({
             <label  htmlFor="customRange1" className="form-label">
               Brightness
             </label>
-            <div className="d-flex justify-content-between">
-              <Button onClick={()=>{handleChangeBrightness('decrement')}}>-</Button>
+            <div className="d-flex justify-content-between align-items-center">
+              <Button className="btn btn-warning" onClick={()=>{handleChangeBrightness('decrement')}}><FontAwesomeIcon className="arrow" icon={faChevronLeft}/></Button>
               <span>{brightness}%</span>
-              <Button onClick={()=>{handleChangeBrightness('increment')}}>+</Button>
+              <Button className="btn btn-warning" onClick={()=>{handleChangeBrightness('increment')}}><FontAwesomeIcon className="arrow" icon={faChevronRight}/></Button>
             </div>
             { device?.name==='tapo'?'':
-              <div className="my-1">
-                <input onChange={handleSlider} step="100" min="2700" max="4700" value={slider} type="range"/>
+              <div className="slider d-flex p-2 mt-2">
+                <input  onChange={handleSlider} step="100" min="2700" max="4700" value={slider} type="range"/>
             </div>
             }
                       </div>
