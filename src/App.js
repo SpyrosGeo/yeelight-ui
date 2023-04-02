@@ -14,7 +14,7 @@ function App() {
   const tempRef = useRef(null)
   const [bulb, setBulb] = useState({});
   const [strip, setStrip] = useState({});
-  const [tapo, setTapo] = useState({});
+//  const [tapo, setTapo] = useState({});
   const [piTemp, setPiTemp] = useState(0)
 
 
@@ -23,13 +23,13 @@ function App() {
       const response = await axios.get(`${BASE_URL}/devices`);
       response.data.bulb.name = "bulb";
       response.data.strip.name = "strip";
-      response.data.tapo.name = "tapo";
+//      response.data.tapo.name = "tapo";
       setBulb(response.data.bulb);
       setStrip(response.data.strip);
-      setTapo(response.data.tapo);
+ //     setTapo(response.data.tapo);
       setBulbBrightness(response.data.bulb.current_brightness)
       setStripBrightness(response.data.strip.current_brightness)
-      setTapoBrightness(response.data.tapo.brightness)
+  //    setTapoBrightness(response.data.tapo.brightness)
     };
     fetchData();
   }, [powerState]);
@@ -54,7 +54,7 @@ function App() {
       setBulb(data.power === "on" ? "off" : "on");
     }
     if (device === "strip") setStrip(data.power === "on" ? "off" : "on");
-    if (device === "tapo") setTapo(data.power === "on" ? "off" : "on");
+    //if (device === "tapo") setTapo(data.power === "on" ? "off" : "on");
     setPowerState({ device, power: data.power });
   };
   // functions that change the state of the device
@@ -124,15 +124,7 @@ function App() {
           handleColorTemp={handleColorTemp}
         />
          </div>
-         <div className="col col-auto mb-1">
-        <DeviceCard
-          device={tapo}
-          brightness={tapoBrightness}
-          handleBrightness={handleBrightness}
-          handleSubmit={handleSubmit}
-          handleColorPickerChange={handleColorPickerChange}
-        />
-         </div>
+         
          <div className="col col-auto mb-1">
         <DeviceCard
           device={strip}
